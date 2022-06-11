@@ -6,7 +6,7 @@ import  EthersAdapter  from '@gnosis.pm/safe-ethers-lib';
 import Safe, {SafeFactory, SafeAccountConfig } from '@gnosis.pm/safe-core-sdk';
 
 
-
+// Creates a new safe 
 async function initialize() {
   let provider = new ethers.providers.Web3Provider(window.ethereum);
   const safeOwner = provider.getSigner(0)
@@ -29,9 +29,29 @@ async function initialize() {
 
 }
 
+// Gets a sdk reference to an existing safe
+async function existingSafe() {
+  let provider = new ethers.providers.Web3Provider(window.ethereum);
+  const safeOwner = provider.getSigner(0)
+  
+  const ethAdapter = new EthersAdapter({
+    ethers,
+    signer: safeOwner,
+
+  }) 
+ 
+  const safeAddress = '0x85496C126B99c5834e8f26573B9A1D800ff0cd23'
+  const safeSdk: Safe = await Safe.create({ethAdapter, safeAddress })
+
+  console.log(safeSdk)
+
+}
+
+
+
 
 function App() {
-  initialize()
+  // initialize()
   return (
     <div className="App">
       <header className="App-header">
