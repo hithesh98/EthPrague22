@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useForm } from "react-hook-form";
 import logo from './logo.svg';
 import './App.css';
 import { ethers } from 'ethers';
@@ -7,16 +8,19 @@ import Safe, {SafeFactory, SafeAccountConfig } from '@gnosis.pm/safe-core-sdk';
 
 
 // Creates a new safe 
-async function initialize() {
+async function initialize(data: any) {
   let provider = new ethers.providers.Web3Provider(window.ethereum);
+  await provider.send("eth_requestAccounts", []);
   const safeOwner = provider.getSigner(0)
+  const address = await safeOwner.getAddress();
   
   const ethAdapter = new EthersAdapter({
     ethers,
     signer: safeOwner
   })
   const safeFactory = await SafeFactory.create({ ethAdapter })
-  const owners = ['0xF13B2D406f0D3F9C6c81bC525ED33Fe70B434870', '0x1c02977fE0BDbD27ef28d6b7eed0854Aa53425b6']
+  const _data = JSON.parse(data);
+  const owners = [address, _data.firstAdd, _data.secondAdd]
   const threshold = 1
   const safeAccountConfig: SafeAccountConfig = {
   owners,
@@ -51,25 +55,18 @@ async function existingSafe() {
 
 
 function App() {
-  // initialize()
+  const { register, handleSubmit } = useForm();
+  const [data, setData] = useState("");
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <form onSubmit={handleSubmit((data) => initialize(JSON.stringify(data)))}>
+      <input {...register("firstAdd")} placeholder="First additional address" />
+      <input {...register("secondAdd")} placeholder="Second additional address" />
+      <p>{data}</p>
+      <input type="submit" />
+    </form>
   );
+  // initialize()
 }
 
 export default App;
