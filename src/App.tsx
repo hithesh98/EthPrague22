@@ -57,6 +57,7 @@ function App() {
   const [data, setData] = useState("");
 
   return (
+    <div>
     <Container text>
       <Header as='h1'>Algoshare</Header>
       <p>Create a Gnosis Safe for your data science project, share profits from deploying to algorithm marketplaces.</p>
@@ -70,6 +71,23 @@ function App() {
       <Button type='submit'>Deploy Safe</Button>
       </Form>
     </Container>
+    <Container>
+      <Header as='h3'>Specify Profit Share Split</Header>
+      <p>Algoshare uses 0xSplits to disburse funds between contributors to your project.</p>
+      <Form>
+        <Form.Field>
+          <input type="text" pattern="[0-9]*" placeholder='Safe Creator Profit Share Percentage' />
+        </Form.Field>
+        <Form.Field>
+          <input type="text" pattern="[0-9]*" placeholder='First Contributor Profit Share Percentage' />
+        </Form.Field>
+        <Form.Field>
+          <input type="text" pattern="[0-9]*" placeholder='Second Contributor Profit Share Percentage' />
+        </Form.Field>
+      </Form>
+      <Button type='submit'>Set Profit Sharing</Button>
+    </Container>
+    </div>
   );
   // initialize()
 }
