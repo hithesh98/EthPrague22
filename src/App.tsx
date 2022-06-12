@@ -5,6 +5,7 @@ import './App.css';
 import { ethers } from 'ethers';
 import  EthersAdapter  from '@gnosis.pm/safe-ethers-lib';
 import Safe, {SafeFactory, SafeAccountConfig } from '@gnosis.pm/safe-core-sdk';
+import { Button, Form, Header, Container } from 'semantic-ui-react';
 
 
 // Creates a new safe 
@@ -51,20 +52,24 @@ async function existingSafe() {
 
 }
 
-
-
-
 function App() {
   const { register, handleSubmit } = useForm();
   const [data, setData] = useState("");
 
   return (
-    <form onSubmit={handleSubmit((data) => initialize(JSON.stringify(data)))}>
-      <input {...register("firstAdd")} placeholder="First additional address" />
-      <input {...register("secondAdd")} placeholder="Second additional address" />
-      <p>{data}</p>
-      <input type="submit" />
-    </form>
+    <Container text>
+      <Header as='h1'>Algoshare</Header>
+      <p>Create a Gnosis Safe for your data science project, share profits from deploying to algorithm marketplaces.</p>
+      <Form onSubmit={handleSubmit((data) => initialize(JSON.stringify(data)))}>
+      <Form.Field>
+        <input {...register("firstAdd")} placeholder="First additional address" />
+      </Form.Field>
+      <Form.Field>
+        <input {...register("secondAdd")} placeholder="Second additional address" />
+      </Form.Field>
+      <Button type='submit'>Deploy Safe</Button>
+      </Form>
+    </Container>
   );
   // initialize()
 }
